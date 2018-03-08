@@ -53,7 +53,7 @@ public class CsDatabase {
             Connection db = DriverManager.getConnection(url, username, password);
 
             Statement st = db.createStatement();
-            ResultSet rs = st.executeQuery("select * from plays");
+            ResultSet rs = st.executeQuery("select * from Players");
             while (rs.next()) {
 
                 System.out.print(rs.getString(1) + " ");
@@ -72,11 +72,43 @@ public class CsDatabase {
     }
 
     private void assignmentB() {
-        System.out.println("test b");
+          try {
+            Connection db = DriverManager.getConnection(url, username, password);
+
+            Statement st = db.createStatement();
+            ResultSet rs = st.executeQuery("select People.Name, Team.Name from Players inner join Winner on Players.Team = Winner.Team union Select Peaple.Name, Team.Name from Coach inner join Winner on Coach.Team = Winner.Team");
+            while (rs.next()) {
+
+                System.out.print(rs.getString(1) + " ");
+                System.out.println(rs.getString(2) + " ");
+            }
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    
     }
 
     private void assignmentC() {
-        System.out.println("test c");
+        try {
+            Connection db = DriverManager.getConnection(url, username, password);
+
+            Statement st = db.createStatement();
+            ResultSet rs = st.executeQuery("select Team, COUNT(*) from Players GROUP BY Team");
+            while (rs.next()) {
+
+                System.out.print(rs.getString(1) + " ");
+                System.out.println(rs.getString(2) + " ");
+            }
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    
     }
 
     private void assignmentD(int nextInt) {
