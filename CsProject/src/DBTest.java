@@ -13,6 +13,7 @@ public class DBTest {
             System.out.println(e);
         }
 
+        System.out.println("Hej");
 
         String url = "jdbc:postgresql://horton.elephantsql.com:5432/ylsaiyqk";
         String username = "ylsaiyqk";
