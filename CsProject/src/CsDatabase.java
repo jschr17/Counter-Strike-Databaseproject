@@ -53,7 +53,7 @@ public class CsDatabase {
             Connection db = DriverManager.getConnection(url, username, password);
 
             Statement st = db.createStatement();
-            ResultSet rs = st.executeQuery("select * from Players");
+            ResultSet rs = st.executeQuery("select * from Player");
             while (rs.next()) {
 
                 System.out.print(rs.getString(1) + " ");
@@ -68,7 +68,23 @@ public class CsDatabase {
     }
 
     private void assignmentA() {
-        System.out.println("test a");
+        // List of all names of coaches and the team they belong to.
+          try {
+            Connection db = DriverManager.getConnection(url, username, password);
+
+            Statement st = db.createStatement();
+            ResultSet rs = st.executeQuery("select name, teamname from people, coaches where people.email = coaches.email");
+            while (rs.next()) {
+
+                System.out.print("Coach name: " + rs.getString(1) + " ");
+                System.out.println("Team name: " + rs.getString(2) + " ");
+            }
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void assignmentB() {
@@ -76,7 +92,7 @@ public class CsDatabase {
             Connection db = DriverManager.getConnection(url, username, password);
 
             Statement st = db.createStatement();
-            ResultSet rs = st.executeQuery("select People.Name, Team.Name from Players inner join Winner on Players.Team = Winner.Team union Select Peaple.Name, Team.Name from Coach inner join Winner on Coach.Team = Winner.Team");
+            ResultSet rs = st.executeQuery("select People.Name, Team.Name from Player inner join Winner on Player.TeamName = Winner.TeamName union Select People.Name, Team.Name from Coach inner join Winner on Coach.TeamName = Winner.Team");
             while (rs.next()) {
 
                 System.out.print(rs.getString(1) + " ");
@@ -96,7 +112,7 @@ public class CsDatabase {
             Connection db = DriverManager.getConnection(url, username, password);
 
             Statement st = db.createStatement();
-            ResultSet rs = st.executeQuery("select Team, COUNT(*) from Players GROUP BY Team");
+            ResultSet rs = st.executeQuery("select Team, COUNT(*) from Player GROUP BY Team");
             while (rs.next()) {
 
                 System.out.print(rs.getString(1) + " ");
