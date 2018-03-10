@@ -76,7 +76,7 @@ public class CsDatabase {
             Connection db = DriverManager.getConnection(url, username, password);
 
             Statement st = db.createStatement();
-            ResultSet rs = st.executeQuery("select People.Name, Team.Name from Players inner join Winner on Players.Team = Winner.Team union Select Peaple.Name, Team.Name from Coach inner join Winner on Coach.Team = Winner.Team");
+            ResultSet rs = st.executeQuery("select name, b.teamname from people,(select email, player.teamname from player inner join winner on player.teamname = winner.teamname union Select email, coaches.teamname from coaches inner join Winner on coaches.Teamname = Winner.Teamname) AS b where b.email = people.email;");
             while (rs.next()) {
 
                 System.out.print(rs.getString(1) + " ");
@@ -96,7 +96,7 @@ public class CsDatabase {
             Connection db = DriverManager.getConnection(url, username, password);
 
             Statement st = db.createStatement();
-            ResultSet rs = st.executeQuery("select Team, COUNT(*) from Players GROUP BY Team");
+            ResultSet rs = st.executeQuery("select teamname, COUNT(*) from Player GROUP BY Teamname");
             while (rs.next()) {
 
                 System.out.print(rs.getString(1) + " ");
