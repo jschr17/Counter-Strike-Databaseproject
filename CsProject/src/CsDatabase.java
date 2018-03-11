@@ -112,7 +112,24 @@ public class CsDatabase {
     }
 
     private void assignmentD(int nextInt) {
-        System.out.println("test d, whith number " + nextInt);
+try {
+            Connection db = DriverManager.getConnection(url, username, password);
+
+            Statement st = db.createStatement();
+            ResultSet rs = st.executeQuery("SELECT tournamentname, tournamentdate, COUNT(teamname) From Participants GROUP BY tournamentname, tournamentdate HAVING COUNT(teamname) >= '" + nextInt + "' ;");
+            System.out.printf("|%1$-35s|%2$-35s|%3$-35s|%n", rs.getMetaData().getColumnName(1), rs.getMetaData().getColumnName(2), rs.getMetaData().getColumnName(3));
+            while (rs.next()) {
+
+                //System.out.print(rs.getString(1) + " "+rs.getString(2) + " "+rs.getString(3) + " \n");
+                System.out.printf("|%1$-35s|%2$-35s|%3$-35s|%n", rs.getString(1), rs.getString(2), rs.getString(3));
+
+            }
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
     
         public static void main(String[] args) {
@@ -123,7 +140,7 @@ public class CsDatabase {
         }
         CsDatabase test = new CsDatabase();
 
-        test.queryTest();
+//        test.queryTest();
         test.runloop();
 
     }
