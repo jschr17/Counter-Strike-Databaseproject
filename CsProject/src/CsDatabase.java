@@ -53,7 +53,7 @@ public class CsDatabase {
             Connection db = DriverManager.getConnection(url, username, password);
 
             Statement st = db.createStatement();
-            ResultSet rs = st.executeQuery("select * from plays");
+            ResultSet rs = st.executeQuery("select * from Players");
             while (rs.next()) {
 
                 System.out.print(rs.getString(1) + " ");
@@ -72,15 +72,64 @@ public class CsDatabase {
     }
 
     private void assignmentB() {
-        System.out.println("test b");
+          try {
+            Connection db = DriverManager.getConnection(url, username, password);
+
+            Statement st = db.createStatement();
+            ResultSet rs = st.executeQuery("select name, b.teamname from people,(select email, player.teamname from player inner join winner on player.teamname = winner.teamname union Select email, coaches.teamname from coaches inner join Winner on coaches.Teamname = Winner.Teamname) AS b where b.email = people.email;");
+            while (rs.next()) {
+
+                System.out.print(rs.getString(1) + " ");
+                System.out.println(rs.getString(2) + " ");
+            }
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    
     }
 
     private void assignmentC() {
-        System.out.println("test c");
+        try {
+            Connection db = DriverManager.getConnection(url, username, password);
+
+            Statement st = db.createStatement();
+            ResultSet rs = st.executeQuery("select teamname, COUNT(*) from Player GROUP BY Teamname");
+            while (rs.next()) {
+
+                System.out.print(rs.getString(1) + " ");
+                System.out.println(rs.getString(2) + " ");
+            }
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    
     }
 
     private void assignmentD(int nextInt) {
-        System.out.println("test d, whith number " + nextInt);
+try {
+            Connection db = DriverManager.getConnection(url, username, password);
+
+            Statement st = db.createStatement();
+            ResultSet rs = st.executeQuery("SELECT tournamentname, tournamentdate, COUNT(teamname) From Participants GROUP BY tournamentname, tournamentdate HAVING COUNT(teamname) >= '" + nextInt + "' ;");
+            System.out.printf("|%1$-35s|%2$-35s|%3$-35s|%n", rs.getMetaData().getColumnName(1), rs.getMetaData().getColumnName(2), rs.getMetaData().getColumnName(3));
+            while (rs.next()) {
+
+                //System.out.print(rs.getString(1) + " "+rs.getString(2) + " "+rs.getString(3) + " \n");
+                System.out.printf("|%1$-35s|%2$-35s|%3$-35s|%n", rs.getString(1), rs.getString(2), rs.getString(3));
+
+            }
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
     
         public static void main(String[] args) {
@@ -91,7 +140,7 @@ public class CsDatabase {
         }
         CsDatabase test = new CsDatabase();
 
-        test.queryTest();
+//        test.queryTest();
         test.runloop();
 
     }
